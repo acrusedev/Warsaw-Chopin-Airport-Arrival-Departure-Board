@@ -1,5 +1,5 @@
 from FlightRadar24 import FlightRadar24API
-import json
+import json, os
 
 class Departure:
     def __init__(self, origin_airport_icao_code:str, entries_limit:int = 10):
@@ -14,28 +14,24 @@ class Departure:
             single_departure_object = warsaw_airport.departures['data'][i]['flight']
             departure_object_list = {
                 'flight_number': single_departure_object['identification']['number']['default'],
-                'airline': single_departure_object['owner']['name'],
+                'airline': single_departure_object['airline']['name'],
                 'status': single_departure_object['status']['text'],
                 'destination_city': single_departure_object['airport']['destination']['position']['region']['city'],
                 'expected_departure_time': single_departure_object['time']['scheduled']['arrival']
             }
-            departure_objects.append(departure_object_list)   
+            
+            departure_objects.append(departure_object_list)
             
         return departure_objects
     
     def returnDepartureJson(self):
-        with open('./local_files/warsaw_airport_departures.json', 'w') as outfile:
+        if not os.path.exists('./local_files'):
+            os.makedirs('./local_files')
+        with open('warsaw_airport_departures.json', 'w') as outfile:
             json.dump(self.getScheduledDeparturesAtAirport(), outfile, indent=2)
     
     """
     def __getDestinationAirportWeatherDetails(self, destination_airport_icao_code:str) -> dict:
         add weather forecast returing temperature and weather conditions(cloudy, sunny, rainy, etc.)
     """
-    
-    
-        
-    
-departure = Departure('EPWA', 10)
-departure.getScheduledDeparturesAtAirport()
-departure.returnDepartureJson()
     

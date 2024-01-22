@@ -1,5 +1,8 @@
 from FlightRadar24 import FlightRadar24API
 import json
+import os
+
+
 
 class Arrival:
     def __init__(self, origin_airport_icao_code:str, entries_limit:int = 10):
@@ -20,12 +23,12 @@ class Arrival:
                 'expected_departure_time': single_arrival_object['time']['scheduled']['arrival']
             }
             arrival_object.append(arrival_object_list)   
-        with open('./local_files/trest.json', 'w') as outfile:
-            json.dump(warsaw_airport.arrivals['data'][2]['flight'], outfile, indent=2)
             
         return arrival_object
     
     def returnArrivalJson(self):
+        if not os.path.exists('./local_files'):
+            os.makedirs('./local_files')
         with open('./local_files/warsaw_airport_arrivals.json', 'w') as outfile:
             json.dump(self.getScheduledArrivalsAtAirport(), outfile, indent=2)
     
@@ -35,10 +38,6 @@ class Arrival:
     """
     
     
-        
-    
-Arrival = Arrival('EPWA', 10)
-Arrival.getScheduledArrivalsAtAirport()
-Arrival.returnArrivalJson()
+
 
     

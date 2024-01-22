@@ -24,7 +24,7 @@ class Departure:
         return departure_objects
     
     def returnDepartureJson(self):
-        with open('./local_files/warsaw_airport.json', 'w') as outfile:
+        with open('./local_files/warsaw_airport_departures.json', 'w') as outfile:
             json.dump(self.getScheduledDeparturesAtAirport(), outfile, indent=2)
     
     """

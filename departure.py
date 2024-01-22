@@ -9,20 +9,33 @@ class Departure:
     
     def getScheduledDeparturesAtAirport(self) -> list:
         warsaw_airport = self.fr.get_airport(code = self.origin_airport_icao_code, details=True)
-        
-        self.flight_number = warsaw_airport.departures['data'][0]['flight']['identification']['number']['default']
-        self.flight_airline = warsaw_airport.departures['data'][0]['flight']['owner']['name']
-        self.flight_status = warsaw_airport.departures['data'][0]['flight']['status']['text']
-        self.flight_destination_city = warsaw_airport.departures['data'][0]['flight']['airport']['destination']['position']['region']['city']
-        self.flight_expected_departure_time = warsaw_airport.departures['data'][0]['flight']['time']['scheduled']['arrival']
-        
-        print(f"self.flight_number {self.flight_number} self.flight_airline {self.flight_airline} self.flight_status {self.flight_status} self.flight_destination_city {self.flight_destination_city} self.flight_expected_departure_time {self.flight_expected_departure_time}")
-        return warsaw_airport.departures['data'][1]['flight']['identification']['number']['default']
+        departure_objects = []
+        for i in range(self.entries_limit):
+            single_departure_object = warsaw_airport.departures['data'][i]['flight']
+            departure_object_list = {
+                'flight_number': single_departure_object['identification']['number']['default'],
+                'airline': single_departure_object['owner']['name'],
+                'status': single_departure_object['status']['text'],
+                'destination_city': single_departure_object['airport']['destination']['position']['region']['city'],
+                'expected_departure_time': single_departure_object['time']['scheduled']['arrival']
+            }
+            departure_objects.append(departure_object_list)   
+            
+        return departure_objects
+    
+    def returnDepartureJson(self):
+        with open('./local_files/warsaw_airport.json', 'w') as outfile:
+            json.dump(self.getScheduledDeparturesAtAirport(), outfile, indent=2)
+    
     """
     def __getDestinationAirportWeatherDetails(self, destination_airport_icao_code:str) -> dict:
         add weather forecast returing temperature and weather conditions(cloudy, sunny, rainy, etc.)
     """
     
+    
+        
+    
 departure = Departure('EPWA', 10)
-print(departure.getScheduledDeparturesAtAirport())
+departure.getScheduledDeparturesAtAirport()
+departure.returnDepartureJson()
     

@@ -1,0 +1,139 @@
+{
+  "identification": {
+    "id": "33b670d2",
+    "row": 5461889760,
+    "number": {
+      "default": "LO3816",
+      "alternative": null
+    },
+    "callsign": "LOT7YF",
+    "codeshare": [
+      "LY9269"
+    ]
+  },
+  "status": {
+    "live": true,
+    "text": "Landed 18:03",
+    "icon": "green",
+    "estimated": null,
+    "ambiguous": false,
+    "generic": {
+      "status": {
+        "text": "landed",
+        "type": "arrival",
+        "color": "green",
+        "diverted": null
+      },
+      "eventTime": {
+        "utc": 1705943037,
+        "local": 1705946637
+      }
+    }
+  },
+  "aircraft": {
+    "model": {
+      "code": "E75S",
+      "text": "Embraer E175STD"
+    },
+    "registration": "SP-LIQ",
+    "country": {
+      "id": 176,
+      "name": "Poland",
+      "alpha2": "PL",
+      "alpha3": "POL"
+    },
+    "hex": "48AD19",
+    "restricted": false,
+    "serialNo": null,
+    "age": {
+      "availability": true
+    },
+    "availability": {
+      "serialNo": true,
+      "age": true
+    }
+  },
+  "owner": {
+    "name": "LOT",
+    "code": {
+      "iata": "LO",
+      "icao": "LOT"
+    },
+    "logo": "https://images.flightradar24.com/assets/airlines/logotypes/11.png"
+  },
+  "airline": {
+    "name": "LOT",
+    "code": {
+      "iata": "LO",
+      "icao": "LOT"
+    },
+    "short": "LOT"
+  },
+  "airport": {
+    "origin": {
+      "code": {
+        "iata": "GDN",
+        "icao": "EPGD"
+      },
+      "timezone": {
+        "name": "Europe/Warsaw",
+        "offset": 3600,
+        "abbr": "CET",
+        "abbrName": "Central European Time",
+        "isDst": false
+      },
+      "info": {
+        "terminal": null,
+        "baggage": null,
+        "gate": null
+      },
+      "name": "Gdansk Lech Walesa Airport",
+      "position": {
+        "latitude": 54.376484,
+        "longitude": 18.47064,
+        "country": {
+          "name": "Poland",
+          "code": "PL",
+          "id": 176
+        },
+        "region": {
+          "city": "Gdansk"
+        }
+      },
+      "visible": true
+    },
+    "destination": {
+      "timezone": {
+        "name": "Europe/Warsaw",
+        "offset": 3600,
+        "abbr": "CET",
+        "abbrName": "Central European Time",
+        "isDst": false
+      },
+      "info": {
+        "terminal": null,
+        "baggage": "5",
+        "gate": null
+      }
+    },
+    "real": null
+  },
+  "time": {
+    "scheduled": {
+      "departure": 1705940100,
+      "arrival": 1705943700
+    },
+    "real": {
+      "departure": 1705940664,
+      "arrival": 1705943037
+    },
+    "estimated": {
+      "departure": null,
+      "arrival": null
+    },
+    "other": {
+      "eta": 1705943037,
+      "duration": 2400
+    }
+  }
+}

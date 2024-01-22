@@ -1,0 +1,72 @@
+[
+  {
+    "flight_number": "LO233",
+    "airline": "LOT",
+    "status": "Estimated dep 16:35",
+    "destination_city": "Brussels",
+    "expected_departure_time": 1705945500
+  },
+  {
+    "flight_number": "LO389",
+    "airline": "LOT",
+    "status": "Estimated dep 16:35",
+    "destination_city": "Berlin",
+    "expected_departure_time": 1705942500
+  },
+  {
+    "flight_number": "LO3923",
+    "airline": "LOT",
+    "status": "Estimated dep 16:35",
+    "destination_city": "Krakow",
+    "expected_departure_time": 1705941000
+  },
+  {
+    "flight_number": "LO267",
+    "airline": "LOT",
+    "status": "Estimated dep 16:40",
+    "destination_city": "Amsterdam",
+    "expected_departure_time": 1705946100
+  },
+  {
+    "flight_number": "LO415",
+    "airline": "LOT",
+    "status": "Estimated dep 16:40",
+    "destination_city": "Geneva",
+    "expected_departure_time": 1705946400
+  },
+  {
+    "flight_number": "KL1366",
+    "airline": "KLM Cityhopper",
+    "status": "Estimated dep 16:50",
+    "destination_city": "Amsterdam",
+    "expected_departure_time": 1705946100
+  },
+  {
+    "flight_number": "LO26",
+    "airline": "LOT",
+    "status": "Estimated dep 16:50",
+    "destination_city": "New York",
+    "expected_departure_time": 1705973700
+  },
+  {
+    "flight_number": "LO319",
+    "airline": "LOT",
+    "status": "Estimated dep 16:50",
+    "destination_city": "Milan",
+    "expected_departure_time": 1705946700
+  },
+  {
+    "flight_number": "LO483",
+    "airline": "LOT",
+    "status": "Estimated dep 16:50",
+    "destination_city": "Oslo",
+    "expected_departure_time": 1705946400
+  },
+  {
+    "flight_number": "LO3947",
+    "airline": "LOT",
+    "status": "Estimated dep 16:50",
+    "destination_city": "Poznan",
+    "expected_departure_time": 1705942200
+  }
+]

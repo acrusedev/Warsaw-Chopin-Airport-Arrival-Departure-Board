@@ -21,11 +21,11 @@ class Arrival:
             
             arrival_object_list = {
                 'flight_number': single_arrival_object['identification']['number']['default'],
-                'airline': single_arrival_object['owner']['name'] if single_arrival_object['airline'] is not None else 'Unknown',
-                'airline_logo': single_arrival_object['owner']['logo'] if single_arrival_object['owner'] is not None else 'Unknown',
+                'airline': single_arrival_object['owner']['name'] if single_arrival_object['airline'] is not None else 'Unknown' if single_arrival_object['airline'] is "Enter Air" else 'Unknown',
+                'airline_logo': single_arrival_object['owner']['logo'] if single_arrival_object.get('owner') and single_arrival_object['owner'].get('logo') else ('https://logowik.com/content/uploads/images/enter-air2825.logowik.com.webp' if single_arrival_object.get('owner') and single_arrival_object['owner'].get('name') == 'Enter Air' else 'Unknown'),
                 'origin_city': single_arrival_object['airport']['origin']['position']['region']['city'] if single_arrival_object['airport']['origin'] is not None else 'Unknown',
                 'status': single_arrival_object['status']['text'],
-                'expected_departure_time': single_arrival_object['time']['scheduled']['arrival']
+                'expected_arrival_time': single_arrival_object['time']['scheduled']['arrival']
             }
             arrival_object.append(arrival_object_list)
             

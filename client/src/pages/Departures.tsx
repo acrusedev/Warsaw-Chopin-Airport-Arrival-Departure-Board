@@ -67,7 +67,7 @@ export function Departures() {
                 <img src="https://www.airport-suppliers.com/wp-content/uploads/2016/02/warsaw-chopin-airport-CMYK.jpg" alt="Warsaw Chopin Airport" className="h-32 px-20" />
             </div>
             <div className='inline-flex'>
-                <table className="table-auto text-zinc-800 text-xl w-screen">
+                <table className="table-auto text-zinc-800 text-2xl font-bold w-screen">
                     <thead>
                         <tr className="bg-cyan-400">
                             <th className="px-4 py-2">Airline</th>

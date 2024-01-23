@@ -51,14 +51,23 @@ export function Arrivals() {
         return `${hours}:${minutes}`;
       };
 
+    const hourNow = new Date().getHours()
+    const minuteNow = new Date().getMinutes()
+
     return (
-        <div className="bg-black w-screen h-screen font-sans">
-            <div className="flex flex-row">
-                <PlaneLanding className="text-yellow-300 h-8 w-8 mt-1 mr-2"/>
-                <h1 className="text-yellow-300 font-bold text-4xl">Arrivals</h1>
+        <div className="bg-white w-screen h-screen font-sans">
+            <div className="flex flex-row justify-center items-center -mt-6">
+                <p className="text-zinc-800 font-bold text-6xl px-20 items-start justify-start">
+                    {minuteNow < 10 ? hourNow + ":0" + minuteNow : hourNow + ":" + minuteNow}
+                </p>
+                <div className="flex flex-row px-20">
+                    <PlaneLanding className="text-zinc-800 h-14 w-14 mr-2" />
+                    <h1 className="text-zinc-800 font-bold text-6xl">ARRIVALS</h1>
+                </div>
+                <img src="https://www.airport-suppliers.com/wp-content/uploads/2016/02/warsaw-chopin-airport-CMYK.jpg" alt="Warsaw Chopin Airport" className="h-32 px-20" />
             </div>
             <div className='inline-flex'>
-                <table className="table-auto text-yellow-300 w-screen">
+                <table className="table-auto text-zinc-800 text-2xl font-bold w-screen">
                     <thead>
                         <tr>
                             <th className="px-4 py-2">Airline</th>
@@ -71,11 +80,16 @@ export function Arrivals() {
                     <tbody>
                         {arrivalsData.map((arrival: any) => (
                             <tr key={arrival.flight}>
-                                <td className="border px-4 py-2">{arrival.airline}</td>
-                                <td className="border px-4 py-2">{arrival.origin_city}</td>
-                                <td className="border px-4 py-2">{arrival.flight_number}</td>
-                                <td className="border px-4 py-2">{formatTime(arrival.expected_departure_time)}</td>
-                                <td className="border px-4 py-2">{arrival.status}</td>
+                                <td className="border px-4 py-2"><div className="flex flex-row gap-x-10 justify-center items-center">{arrival.airline_logo ? <img className="" src={arrival.airline_logo} alt="" /> : arrival.airline}</div></td>
+                                <td className="border px-4 py-2"><div className="flex flex-row gap-x-10 justify-center items-center">{arrival.origin_city}</div></td>
+                                <td className="border px-4 py-2"><div className="flex flex-row gap-x-10 justify-center items-center">{arrival.flight_number}</div></td>
+                                <td className="border px-4 py-2"><div className="flex flex-row gap-x-10 justify-center items-center">{formatTime(arrival.expected_departure_time)}</div></td>
+                                <td className="border px-4 py-2"><div className="flex flex-row gap-x-10 justify-center items-center">
+                                    {arrival.status.split(' ').map((word: string) => (word === 'Delayed' ? <span className="text-orange-500">{arrival.status}</span> :
+                                    word === 'Landed' ? <span className="text-green-600">{arrival.status}</span> :
+                                    word === 'Estimated' ? <span>{arrival.status}</span> :
+                                    word === 'Cancelled' ? <span className="text-red-600">{arrival.status}</span> : null))}
+                                    </div></td>
                             </tr>
                         ))}
                     </tbody>

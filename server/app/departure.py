@@ -10,9 +10,6 @@ class Departure:
     def getScheduledDeparturesAtAirport(self) -> list:
         warsaw_airport = self.fr.get_airport(code = self.origin_airport_icao_code, details=True)
         departure_objects = []
-        print('------------------------------------------------------------------------------------------------------------------')
-        [print(json.dumps(warsaw_airport.departures['data'][x]['flight'], indent=2)) for x in range(self.entries_limit)]
-      
         for i in range(self.entries_limit):
             single_departure_object = warsaw_airport.departures['data'][i]['flight']
             destination_airport_icao_code = single_departure_object['airport']['destination']['code']['icao']

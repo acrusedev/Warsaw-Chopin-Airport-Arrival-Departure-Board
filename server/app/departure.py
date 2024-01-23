@@ -24,12 +24,6 @@ class Departure:
             
         return departure_objects
     
-    def returnDepartureJson(self):
-        if not os.path.exists('./local_files'):
-            os.makedirs('./local_files')
-        with open('warsaw_airport_departures.json', 'w') as outfile:
-            json.dump(self.getScheduledDeparturesAtAirport(), outfile, indent=2)
-    
     """
     def __getDestinationAirportWeatherDetails(self, destination_airport_icao_code:str) -> dict:
         add weather forecast returing temperature and weather conditions(cloudy, sunny, rainy, etc.)

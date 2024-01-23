@@ -1,6 +1,8 @@
 
 import * as React from "react";
 import { Button } from "../components/Button";
+import { PlaneLanding } from 'lucide-react'
+import Letter  from './Letter';
 
 export function Arrivals() {
     const [arrivalsData, setArrivalsData] = React.useState([])
@@ -26,30 +28,59 @@ export function Arrivals() {
         if (!initalFetch) {
             fetchArrivals();
             setInitialFetch(true);
-            
+
         }
 
-        // Start the timer countdown
         const intervalId = setInterval(() => {
             setTimer(prevTimer => prevTimer - 1);
         }, 1000);
 
-        // Fetch arrivals data when the timer reaches 0
+        
         if (timer === 0) {
-            // Reset the timer to 5 minutes
             setTimer(300);
-            // Fetch arrivals data
             fetchArrivals();
         }
 
-        // Clear the interval when the component unmounts
         return () => clearInterval(intervalId);
     }, [timer, initalFetch]);
 
+    const formatTime = (timestamp: number): string => {
+        const date = new Date(timestamp * 1000); // Convert to milliseconds
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`;
+      };
 
     return (
-        <div>
-            <h1>Arrivals</h1>
+        <div className="bg-black w-screen h-screen font-sans">
+            <div className="flex flex-row">
+                <PlaneLanding className="text-yellow-300 h-8 w-8 mt-1 mr-2"/>
+                <h1 className="text-yellow-300 font-bold text-4xl">Arrivals</h1>
+            </div>
+            <div className='inline-flex'>
+                <table className="table-auto text-yellow-300 w-screen">
+                    <thead>
+                        <tr>
+                            <th className="px-4 py-2">Airline</th>
+                            <th className="px-4 py-2">Origin</th>
+                            <th className="px-4 py-2">Flight number</th>
+                            <th className="px-4 py-2">Estimated</th>
+                            <th className="px-4 py-2">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {arrivalsData.map((arrival: any) => (
+                            <tr key={arrival.flight}>
+                                <td className="border px-4 py-2">{arrival.airline}</td>
+                                <td className="border px-4 py-2">{arrival.origin_city}</td>
+                                <td className="border px-4 py-2">{arrival.flight_number}</td>
+                                <td className="border px-4 py-2">{formatTime(arrival.expected_departure_time)}</td>
+                                <td className="border px-4 py-2">{arrival.status}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
             <p>Time until next fetch: {timer} seconds</p>
             <Button onClick={fetchArrivals}>Click me</Button>
         </div>

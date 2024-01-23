@@ -11,7 +11,7 @@ export function Departures() {
 
     const fetchArrivals = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/arrivals', {
+            const response = await fetch('http://127.0.0.1:5000/api/departures', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -69,13 +69,13 @@ export function Departures() {
                         </tr>
                     </thead>
                     <tbody>
-                        {departuresData.map((arrival: any) => (
-                            <tr key={arrival.flight}>
-                                <td className="border px-4 py-4"><div className="flex flex-row gap-x-10 justify-center items-center">{arrival.airline_logo ? <img className="" src={arrival.airline_logo} alt=""/> :arrival.airline}</div></td>
-                                <td className="border px-4 py-2">{arrival.origin_city}</td>
-                                <td className="border px-4 py-2">{arrival.flight_number}</td>
-                                <td className="border px-4 py-2">{formatTime(arrival.expected_departure_time)}</td>
-                                <td className="border px-4 py-2">{arrival.status}</td>
+                        {departuresData.map((departure: any) => (
+                            <tr key={departure.flight}>
+                                <td className="border px-4 py-4"><div className="flex flex-row gap-x-10 justify-center items-center">{departure.airline_logo ? <img className="" src={departure.airline_logo} alt=""/> :departure.airline}</div></td>
+                                <td className="border px-4 py-2">{departure.destination_city}</td>
+                                <td className="border px-4 py-2">{departure.flight_number}</td>
+                                <td className="border px-4 py-2">{formatTime(departure.expected_departure_time)}</td>
+                                <td className="border px-4 py-2">{departure.status}</td>
                             </tr>
                         ))}
                     </tbody>

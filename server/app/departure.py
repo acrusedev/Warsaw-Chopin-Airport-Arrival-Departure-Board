@@ -19,7 +19,7 @@ class Departure:
                 'airline_logo': single_departure_object['owner']['logo'] if single_departure_object['airline'] is not None else 'Unknown',
                 'status': single_departure_object['status']['text'] if single_departure_object['status'] is not None else 'Unknown',
                 'destination_city': single_departure_object['airport']['destination']['position']['region']['city'] if single_departure_object['airport'] is not None else 'Unknown',
-                'expected_departure_time': single_departure_object['time']['scheduled']['arrival']
+                'expected_departure_time': single_departure_object['time']['scheduled']['departure']
             }
             
             departure_objects.append(departure_object_list)

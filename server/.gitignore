@@ -2,3 +2,4 @@
 local_files
 app/__pycache__
 venv
+.gitignore

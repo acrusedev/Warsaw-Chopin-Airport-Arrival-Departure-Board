@@ -5,19 +5,17 @@ from flask import jsonify
 
 
 class Arrival:
-    def __init__(self, origin_airport_icao_code:str, entries_limit:int = 10):
+    def __init__(self, origin_airport_icao_code:str, entries_limit:int = 39):
         self.fr = FlightRadar24API()
         self.origin_airport_icao_code = origin_airport_icao_code
         self.entries_limit = entries_limit
     
-    def getScheduledArrivalsAtAirport(self) -> list:
+    def getScheduledArrivalsAtAirport(self, lower_range:int, upper_range:int) -> list:
         warsaw_airport = self.fr.get_airport(code=self.origin_airport_icao_code, details=True)
         arrival_object = []
         
-        for i in range(self.entries_limit):
+        for i in range(lower_range, upper_range):
             single_arrival_object = warsaw_airport.arrivals['data'][i]['flight']
-
-            # Check if all required fields are present
             
             arrival_object_list = {
                 'flight_number': single_arrival_object['identification']['number']['default'],

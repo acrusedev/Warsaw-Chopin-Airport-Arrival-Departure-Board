@@ -29,6 +29,8 @@ class Departure:
                     'destination_airport_sky_condition': weather.skyCondition(),
                 }
                 self.airport_details_cache[i] = departure_object_list
+                if i != 0 and i % 1 == 0:
+                    time.sleep(2)
             
             except Exception as e:
                 print(f'Error: {e} fetching data for {i} entry in cache in {time.time() - start_time} seconds')
@@ -43,7 +45,8 @@ class Departure:
             lower = limit
             
         for i in range(lower) : 
-            cached_departures[i] = self.airport_details_cache[i]
+            if i in self.airport_details_cache:
+                cached_departures[i] = self.airport_details_cache[i]
         return cached_departures
 class Weather:
     def __init__(self, fr: FlightRadar24API, airport_details):

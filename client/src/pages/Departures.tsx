@@ -1,48 +1,135 @@
 
 import * as React from "react";
 import { Button } from "../components/Button";
-import { PlaneTakeoff, Cloudy, Sun, Thermometer, CloudRainWind, Cloud } from 'lucide-react'
-import Letter from './Letter';
+import { PlaneTakeoff, Cloudy, Sun, Thermometer, CloudRainWind, Cloud, CloudDrizzle, CloudSnow, CloudFog } from 'lucide-react'
+
+interface Departure {
+    airline: string,
+    airline_logo: string,
+    destination_airport_sky_condition: string,
+    destination_airport_temperature: string,
+    destination_city: string,
+    expected_departure_time: number,
+    flight_number: string,
+    status: string,
+}
+
+interface Cache {
+    message: string
+}
 
 export function Departures() {
-    const [departuresData, setdeparturesData] = React.useState([])
-    const [timer, setTimer] = React.useState(300)
+    const [departuresData, setDeparturesData] = React.useState<Departure[]>([])
+    const [departuresData1, setDeparturesData1] = React.useState<Departure[]>([])
+    const [departuresData2, setDeparturesData2] = React.useState<Departure[]>([])
+    const [departuresData3, setDeparturesData3] = React.useState<Departure[]>([])
+    const [fetchTimer, setFetchTimer] = React.useState(300)
+    const [pageTimer, setPageTimer] = React.useState(20)
     const [initalFetch, setInitialFetch] = React.useState(false)
+    const [page, setPage] = React.useState(1)
 
-    const fetchArrivals = async () => {
+    const cacheScheduledDepartures = async () => {
+        console.log('cacheScheduledDepartures start');
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/departures', {
+            const response = await fetch('http://127.0.0.1:5000/api/getDepartures', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-            const data = await response.json();
-            setdeparturesData(data);
+            const data: Cache = await response.json();
+            console.log(data);
+            console.log('cacheScheduledDepartures end');
+            return data
         } catch (error) {
-            console.error('Error fetching arrivals:', error);
+            console.error('Error caching departures:', error);
+        }
+        
+    }
+
+    const getCachedDepartures = async () => {
+        console.log('getCachedDepartures start');
+        try {
+            const response = await fetch(`http://127.0.0.1:5000/api/getCachedDepartures`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data: Departure[] = await response.json();
+            console.log("read data", data)
+
+            const departuresData1: Departure[] = []
+            const departuresData2: Departure[] = []
+            const departuresData3: Departure[] = []
+
+            for (let i = 0; i < Object.values(data).length; i++) {
+                if (i < 13) {
+                    departuresData1.push(data[i])
+                } else if (i >= 13 && i < 26) {
+                    departuresData2.push(data[i])
+                } else if (i >= 26) {
+                    departuresData3.push(data[i])
+                }
+            }
+            if (Object.values(departuresData1).length > 0) {setDeparturesData1(departuresData1 as Departure[])} 
+            if (Object.values(departuresData2).length > 0) {setDeparturesData2(departuresData2 as Departure[])}
+            if (Object.values(departuresData3).length > 0) {setDeparturesData3(departuresData3 as Departure[])}
+
+            console.log("datas", departuresData1, departuresData2, departuresData3)
+            console.log('getCachedDepartures end');
+            return "Finished reading data"
+
+        } catch (error) {
+            console.error('Error reading departures:', error);
         }
     };
 
+    const fetchData = async () => {
+        await cacheScheduledDepartures().then(() => getCachedDepartures())
+    }
+
+
     React.useEffect(() => {
-        if (!initalFetch) {
-            fetchArrivals();
-            setInitialFetch(true);
-
-        }
-
         const intervalId = setInterval(() => {
-            setTimer(prevTimer => prevTimer - 1);
+
+            if (initalFetch === false) {
+                setInitialFetch(true);
+                fetchData();
+            }
+
+            setPageTimer(prevTimer => {
+                if (prevTimer === 1) {
+                    let nextPage = page === 3 ? 1 : page + 1
+                    if (nextPage === 1 && departuresData1 && departuresData1.length > 0) {
+                        setDeparturesData(departuresData1)
+                    } else if (nextPage === 2 && departuresData2 && departuresData2.length > 0) {
+                        setDeparturesData(departuresData2)
+                    } else if (nextPage === 3 && departuresData3 && departuresData3.length > 0) {
+                        setDeparturesData(departuresData3)
+                    } else {
+                        nextPage = 1
+                        setDeparturesData(departuresData1)
+                    }
+                    setPage(nextPage)
+                    return 20
+                } else {
+                    return prevTimer - 1;
+                }
+            });
+    
+            setFetchTimer(prevValTimer => {
+                if (prevValTimer === 1) {
+                    fetchData()
+                    return 300
+                } else {
+                    return prevValTimer - 1
+                }
+            })
         }, 1000);
 
-
-        if (timer === 0) {
-            setTimer(300);
-            fetchArrivals();
-        }
-
         return () => clearInterval(intervalId);
-    }, [timer, initalFetch]);
+    }, );
 
     const formatTime = (timestamp: number): string => {
         const date = new Date(timestamp * 1000); // Convert to milliseconds
@@ -52,22 +139,23 @@ export function Departures() {
     };
 
     const hourNow = new Date().getHours()
-    const minuteNow = new Date().getMinutes()
 
+    const minuteNow = new Date().getMinutes()
     return (
         <div className="bg-white w-screen h-screen font-sans">
             <div className="flex flex-row justify-center items-center -mt-6">
-                <p className="text-zinc-800 font-bold text-6xl px-20 items-start justify-start">
+                <p className="text-zinc-800 font-bold text-6xl items-center justify-cente">Page {page}</p>
+                <p className="text-zinc-800 font-bold text-6xl items-start justify-start ml-56">
                     {minuteNow < 10 ? hourNow + ":0" + minuteNow : hourNow + ":" + minuteNow}
                 </p>
                 <div className="flex flex-row px-20">
                     <PlaneTakeoff className="text-zinc-800 h-14 w-14 mr-2" />
                     <h1 className="text-zinc-800 font-bold text-6xl">DEPARTURES</h1>
                 </div>
-                <img src="https://www.airport-suppliers.com/wp-content/uploads/2016/02/warsaw-chopin-airport-CMYK.jpg" alt="Warsaw Chopin Airport" className="h-32 px-20" />
+                <img src="https://www.airport-suppliers.com/wp-content/uploads/2016/02/warsaw-chopin-airport-CMYK.jpg" alt="Warsaw Chopin Airport" className="h-32 ml-56" />
             </div>
             <div className='inline-flex'>
-                <table className="table-auto text-zinc-800 text-2xl font-bold w-screen">
+                <table className="table-auto text-zinc-800 text-2xl font-bold w-screen h-screen">
                     <thead>
                         <tr className="bg-cyan-400">
                             <th className="px-4 py-2">Airline</th>
@@ -79,21 +167,25 @@ export function Departures() {
                         </tr>
                     </thead>
                     <tbody>
-                        {departuresData.map((departure: any) => (
-                            <tr key={departure.flight}>
-                                <td className="border px-4 py-4"><div className="flex flex-row gap-x-10 justify-center items-center">{departure.airline_logo ? <img className="" src={departure.airline_logo} alt="" /> : departure.airline}</div></td>
-                                <td className="border px-4 py-2"><div className="flex flex-row justify-center items-center">{formatTime(departure.expected_departure_time)}</div></td>
-                                <td className="border px-4 py-2"><div className="flex flex-row justify-center items-center">{departure.destination_city}</div></td>
-                                <td className="border px-4 py-2"><div className="flex flex-row justify-center items-center">{departure.flight_number}</div></td>
+                        {Object.values(departuresData).map((departure: Departure) => (
+                            departure === undefined ? null :
+                            <tr key={departure.flight_number}>
+                                <td className="border px-4 py-2"><div className="flex flex-row gap-x-10 justify-center items-center">{departure.airline_logo !== 'Unknown' ? <img className="h-12 w-32" src={departure.airline_logo} alt="" /> : "Unknown"}</div></td>
+                                <td className="border px-4 py-2"><div className="flex flex-row justify-center items-center">{formatTime(departure.expected_departure_time === undefined ? 1 : departure.expected_departure_time)}</div></td>
+                                <td className="border px-4 py-2"><div className="flex flex-row justify-center items-center">{departure.destination_city === undefined ? null : departure.destination_city}</div></td>
+                                <td className="border px-4 py-2"><div className="flex flex-row justify-center items-center">{departure.flight_number === undefined ? null : departure.flight_number}</div></td>
                                 <td className="border px-4 py-2">
                                     <div className="flex flex-row items-center justify-center">
-                                        <Thermometer /><span>{departure.destination_airport_temperature + "°C"}</span>
+                                        <Thermometer /><span>{departure.destination_airport_temperature === undefined ? null : departure.destination_airport_temperature + "°C"}</span>
                                         <span className="ml-5 mt-1">
-                                        {departure.destination_airport_sky_condition === 'Cloudy' ? <Cloud/> : 
-                                        departure.destination_airport_sky_condition === 'Rain' ? <CloudRainWind/> : 
-                                        departure.destination_airport_sky_condition === 'Overcast' ? <Cloudy/> :
-                                        departure.destination_airport_sky_condition === 'Clear' ? <Sun/> : null
-                                        }</span>
+                                            {departure.destination_airport_sky_condition === 'Cloudy' ? <Cloud /> :
+                                                departure.destination_airport_sky_condition === 'Rain' ? <CloudRainWind /> :
+                                                    departure.destination_airport_sky_condition === 'Overcast' ? <Cloudy /> :
+                                                        departure.destination_airport_sky_condition === 'Clear' ? <Sun /> :
+                                                            departure.destination_airport_sky_condition === 'Drizzle' ? <CloudDrizzle /> :
+                                                                departure.destination_airport_sky_condition === 'Snow' ? <CloudSnow /> : 
+                                                                    departure.destination_airport_sky_condition === 'Fog' ? <CloudFog /> : null}
+                                        </span>
                                     </div>
                                 </td>
                                 <td className="border px-4 py-2">{departure.status}</td>
@@ -102,8 +194,9 @@ export function Departures() {
                     </tbody>
                 </table>
             </div>
-            <p>Time until next fetch: {timer} seconds</p>
-            <Button onClick={fetchArrivals}>Click me</Button>
+            <p>Time until next page: {pageTimer} seconds</p>
+            <p>Time until next refresh: {fetchTimer} seconds</p>
+            <Button onClick={() => getCachedDepartures()}>Click me</Button>
         </div>
     )
 }

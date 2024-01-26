@@ -2,7 +2,6 @@
 import * as React from "react";
 import { Button } from "../components/Button";
 import { PlaneLanding } from 'lucide-react'
-import Letter  from './Letter';
 
 export function Arrivals() {
     const [arrivalsData, setArrivalsData] = React.useState([])
@@ -45,7 +44,7 @@ export function Arrivals() {
     }, [timer, initalFetch]);
 
     const formatTime = (timestamp: number): string => {
-        const date = new Date(timestamp * 1000); // Convert to milliseconds
+        const date = new Date(timestamp * 1000);
         const hours = date.getHours().toString().padStart(2, '0');
         const minutes = date.getMinutes().toString().padStart(2, '0');
         return `${hours}:${minutes}`;
@@ -69,9 +68,9 @@ export function Arrivals() {
             <div className='inline-flex'>
                 <table className="table-auto text-zinc-800 text-2xl font-bold w-screen">
                     <thead>
-                        <tr>
+                        <tr className="bg-cyan-400">
                             <th className="px-4 py-2">Airline</th>
-                            <th className="px-4 py-2">Origin</th>
+                            <th className="px-4 py-2 w-1/6">Origin</th>
                             <th className="px-4 py-2">Flight number</th>
                             <th className="px-4 py-2">Estimated</th>
                             <th className="px-4 py-2">Status</th>
@@ -80,22 +79,23 @@ export function Arrivals() {
                     <tbody>
                         {arrivalsData.map((arrival: any) => (
                             <tr key={arrival.flight}>
-                                <td className="border px-4 py-2"><div className="flex flex-row gap-x-10 justify-center items-center">{arrival.airline_logo ? <img className="" src={arrival.airline_logo} alt="" /> : arrival.airline}</div></td>
+                                <td className="border px-4 py-2"><div className="flex flex-row gap-x-10 justify-center items-center">{arrival.airline_logo !== "Unknown" ? <img className="h-12 w-32" src={arrival.airline_logo} alt="" /> : arrival.airline}</div></td>
                                 <td className="border px-4 py-2"><div className="flex flex-row gap-x-10 justify-center items-center">{arrival.origin_city}</div></td>
                                 <td className="border px-4 py-2"><div className="flex flex-row gap-x-10 justify-center items-center">{arrival.flight_number}</div></td>
-                                <td className="border px-4 py-2"><div className="flex flex-row gap-x-10 justify-center items-center">{formatTime(arrival.expected_departure_time)}</div></td>
+                                <td className="border px-4 py-2"><div className="flex flex-row gap-x-10 justify-center items-center">{formatTime(arrival.expected_arrival_time)}</div></td>
                                 <td className="border px-4 py-2"><div className="flex flex-row gap-x-10 justify-center items-center">
                                     {arrival.status.split(' ').map((word: string) => (word === 'Delayed' ? <span className="text-orange-500">{arrival.status}</span> :
                                     word === 'Landed' ? <span className="text-green-600">{arrival.status}</span> :
                                     word === 'Estimated' ? <span>{arrival.status}</span> :
-                                    word === 'Cancelled' ? <span className="text-red-600">{arrival.status}</span> : null))}
+                                    word === 'Cancelled' ? <span className="text-red-600">{arrival.status}</span> : 
+                                    word === 'Scheduled' ? <span>{arrival.status}</span> : null))}
                                     </div></td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-            <p>Time until next fetch: {timer} seconds</p>
+            <p>Time until next refresh: {timer} seconds</p>
             <Button onClick={fetchArrivals}>Click me</Button>
         </div>
     )

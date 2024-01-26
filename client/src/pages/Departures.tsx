@@ -159,23 +159,23 @@ export function Departures() {
                     <table className="table-auto text-zinc-800 text-2xl font-bold w-screen">
                         <thead>
                             <tr className="bg-cyan-400">
-                                <th className="px-4 py-1">Airline</th>
-                                <th className="px-4 py-1">Scheduled</th>
-                                <th className="px-4 py-1 w-1/6">Destination</th>
-                                <th className="px-4 py-1">Flight</th>
-                                <th className="px-4 py-1 w-1/6">Destination weather</th>
-                                <th className="px-4 py-1">Status</th>
+                                <th className="px-4 py-2">Airline</th>
+                                <th className="px-4 py-2">Scheduled</th>
+                                <th className="px-4 py-2 w-1/6">Destination</th>
+                                <th className="px-4 py-2">Flight</th>
+                                <th className="px-4 py-2 w-1/6">Destination weather</th>
+                                <th className="px-4 py-2">Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             {Object.values(departuresData).map((departure: Departure) => (
                                 departure === undefined ? null :
                                     <tr key={departure.flight_number}>
-                                        <td className="border px-4 py-1"><div className="flex flex-row gap-x-10 justify-center items-center">{departure.airline_logo !== 'Unknown' ? <img className="h-12 w-32" src={departure.airline_logo} alt="" /> : "Unknown"}</div></td>
-                                        <td className="border px-4 py-1"><div className="flex flex-row justify-center items-center">{formatTime(departure.expected_departure_time === undefined ? 1 : departure.expected_departure_time)}</div></td>
-                                        <td className="border px-4 py-1"><div className="flex flex-row justify-center items-center">{departure.destination_city === undefined ? null : departure.destination_city}</div></td>
-                                        <td className="border px-4 py-1"><div className="flex flex-row justify-center items-center">{departure.flight_number === undefined ? null : departure.flight_number}</div></td>
-                                        <td className="border px-4 py-1">
+                                        <td className="border px-4 py-2"><div className="flex flex-row gap-x-10 justify-center items-center">{departure.airline_logo !== 'Unknown' ? <img className="h-12 w-32" src={departure.airline_logo} alt="" /> : "Unknown"}</div></td>
+                                        <td className="border px-4 py-2"><div className="flex flex-row justify-center items-center">{formatTime(departure.expected_departure_time === undefined ? 1 : departure.expected_departure_time)}</div></td>
+                                        <td className="border px-4 py-2"><div className="flex flex-row justify-center items-center">{departure.destination_city === undefined ? null : departure.destination_city}</div></td>
+                                        <td className="border px-4 py-2"><div className="flex flex-row justify-center items-center">{departure.flight_number === undefined ? null : departure.flight_number}</div></td>
+                                        <td className="border px-4 py-2">
                                             <div className="flex flex-row items-center justify-center">
                                                 <Thermometer /><span>{departure.destination_airport_temperature === undefined ? null : departure.destination_airport_temperature + "°C"}</span>
                                                 <span className="ml-5 mt-1">
@@ -189,7 +189,7 @@ export function Departures() {
                                                 </span>
                                             </div>
                                         </td>
-                                        <td className="border px-4 py-1">{departure.status}</td>
+                                        <td className="border px-4 py-2">{departure.status}</td>
                                     </tr>
                             ))}
                         </tbody>

@@ -25,9 +25,9 @@ class Arrival:
                     'expected_arrival_time': single_arrival_object['time']['scheduled']['arrival']
                 }
                 if self.validateData(arrival_object_list):
-                    self.airport_arrivals_cache[i] = arrival_object_list
+                    self.airport_arrivals_cache[valid_entries] = arrival_object_list
                     valid_entries += 1
-                    print(f'Added {i}th arrival to cache.')
+                    print(f'Added {valid_entries}th arrival to cache.')
                 if i != 0 and i % 1 == 0:
                     time.sleep(2)
             except Exception as e:

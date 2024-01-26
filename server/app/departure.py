@@ -30,9 +30,9 @@ class Departure:
                     'destination_airport_sky_condition': weather.skyCondition(),
                 }
                 if self.validateData(departure_object_list):
-                    self.airport_departures_cache[i] = departure_object_list
+                    self.airport_departures_cache[valid_entries] = departure_object_list
                     valid_entries += 1
-                    print(f'Added {i}th departure to cache.')
+                    print(f'Added {valid_entries}th departure to cache.')
                 if i != 0 and i % 1 == 0:
                     time.sleep(2)
             except Exception as e:

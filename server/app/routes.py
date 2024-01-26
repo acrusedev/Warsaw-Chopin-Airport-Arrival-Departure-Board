@@ -12,11 +12,11 @@ departure = None
 def getDepartures():
     global departure
     departure = Departure('EPWA')
-    departures = departure.cacheScheduledDeparturesAtAirport(40)
+    departures = departure.cacheScheduledDeparturesAtAirport(39)
     return jsonify(departures), 200
 
 @routes.route('/api/getCachedDepartures', methods=['GET'])
 def getCachedDepartures():
     global departure
-    departures = departure.getCachedDeparturesData(40)
+    departures = departure.getCachedDeparturesData(39)
     return jsonify(departures), 200

@@ -6,7 +6,7 @@ class Departure:
         self.fr = FlightRadar24API()
         self.origin_airport_icao_code = origin_airport_icao_code
         self.warsaw_airport = self.fr.get_airport(code = self.origin_airport_icao_code, details=True)
-        self.airport_details_cache = {}
+        self.airport_departures_cache = {}
     
     def cacheScheduledDeparturesAtAirport(self, required_valid_entries:int):
         start_time = time.time()
@@ -30,9 +30,9 @@ class Departure:
                     'destination_airport_sky_condition': weather.skyCondition(),
                 }
                 if self.validateData(departure_object_list):
-                    self.airport_details_cache[i] = departure_object_list
+                    self.airport_departures_cache[i] = departure_object_list
                     valid_entries += 1
-                    print(f'Added {i}th entry to cache.')
+                    print(f'Added {i}th departure to cache.')
                 if i != 0 and i % 1 == 0:
                     time.sleep(2)
             except Exception as e:
@@ -42,7 +42,7 @@ class Departure:
         return f'Departures cached in {time.time() - start_time} seconds'
         
     def validateData(self, data: dict) -> bool:
-        keys = ['flight_number', 'airline', 'airline_logo', 'status', 'destination_city', 'expected_departure_time']
+        keys = ['flight_number', 'airline', 'destination_city', 'expected_departure_time']
         for key in keys:
             if data[key] == None or data[key] == 'null' or data[key] == 'Unknown':
                 return False   
@@ -50,14 +50,14 @@ class Departure:
     
     def getCachedDeparturesData(self, limit: int):
         cached_departures = {}
-        if limit > len(self.airport_details_cache):
-            lower = len(self.airport_details_cache)
+        if limit > len(self.airport_departures_cache):
+            lower = len(self.airport_departures_cache)
         else:
             lower = limit
             
         for i in range(lower) : 
-            if i in self.airport_details_cache:
-                cached_departures[i] = self.airport_details_cache[i]
+            if i in self.airport_departures_cache:
+                cached_departures[i] = self.airport_departures_cache[i]
         return cached_departures
 class Weather:
     def __init__(self, fr: FlightRadar24API, airport_details):

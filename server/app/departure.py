@@ -1,5 +1,6 @@
 from FlightRadar24 import FlightRadar24API
 import time
+import json
 class Departure:
     def __init__(self, origin_airport_icao_code:str):
         self.fr = FlightRadar24API()
@@ -7,9 +8,11 @@ class Departure:
         self.warsaw_airport = self.fr.get_airport(code = self.origin_airport_icao_code, details=True)
         self.airport_details_cache = {}
     
-    def cacheScheduledDeparturesAtAirport(self, lower_range_entries:int, upper_range_entries:int):
-        for i in range(lower_range_entries, upper_range_entries):
+    def cacheScheduledDeparturesAtAirport(self, upper_range_entries:int):
+        start_time = time.time()
+        for i in range(upper_range_entries):
             try:
+                
                 single_departure_object = self.warsaw_airport.departures['data'][i]['flight']
                 destination_airport_icao_code = single_departure_object['airport']['destination']['code']['icao']
             
@@ -26,17 +29,22 @@ class Departure:
                     'destination_airport_sky_condition': weather.skyCondition(),
                 }
                 self.airport_details_cache[i] = departure_object_list
-            except Exception:
-                upper_range_entries += 1
-                continue
             
+            except Exception as e:
+                print(f'Error: {e} fetching data for {i} entry in cache in {time.time() - start_time} seconds')
+        return f'Departures cached in {time.time() - start_time} seconds'
         
-    def getAirportDetailsCache(self, entities_number: int):
-        new_airport_details_cache = {}
-        for i in range(entities_number):
-            new_airport_details_cache[i] = self.airport_details_cache[i]
-        return new_airport_details_cache
-    
+        
+    def getCachedDeparturesData(self, limit: int):
+        cached_departures = {}
+        if limit > len(self.airport_details_cache):
+            lower = len(self.airport_details_cache)
+        else:
+            lower = limit
+            
+        for i in range(lower) : 
+            cached_departures[i] = self.airport_details_cache[i]
+        return cached_departures
 class Weather:
     def __init__(self, fr: FlightRadar24API, airport_details):
         self.airport_details = airport_details
@@ -46,8 +54,3 @@ class Weather:
         return self.airport_details['airport']["pluginData"]['weather']['sky']['condition']['text'] if self.airport_details['airport']["pluginData"]['weather'] is not None else 'Unknown'
 
 
-start_time = time.time()
-departure = Departure('EPWA')
-departure.cacheScheduledDeparturesAtAirport(0, 40)
-print(departure.getAirportDetailsCache(40))
-print("--- %s seconds ---" % (time.time() - start_time))

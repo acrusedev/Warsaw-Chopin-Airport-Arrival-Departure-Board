@@ -5,17 +5,18 @@ from .departure import Departure
 
 routes = Blueprint('routes', __name__)
 
-@routes.route('/api/arrivals', methods=['GET'])
-def get_arrivals1():
-    arrival = Arrival('EPWA')
-    arrivals = arrival.getScheduledArrivalsAtAirport(0, 40)
-    print(arrivals)
-    return jsonify(arrivals), 200
+departure = None
 
 
-@routes.route('/api/departures', methods=['GET'])
-def get_departures1():
+@routes.route('/api/getDepartures', methods=['GET'])
+def getDepartures():
+    global departure
     departure = Departure('EPWA')
-    departures = departure.getScheduledDeparturesAtAirport(0,40)
-    print(departures)
+    departures = departure.cacheScheduledDeparturesAtAirport(40)
+    return jsonify(departures), 200
+
+@routes.route('/api/getCachedDepartures', methods=['GET'])
+def getCachedDepartures():
+    global departure
+    departures = departure.getCachedDeparturesData(40)
     return jsonify(departures), 200

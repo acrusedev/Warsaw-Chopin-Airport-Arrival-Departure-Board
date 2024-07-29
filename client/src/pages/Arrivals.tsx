@@ -1,6 +1,5 @@
 
 import * as React from "react";
-import { Button } from "../components/Button";
 import { PlaneLanding } from 'lucide-react'
 
 interface Arrival {
@@ -29,7 +28,7 @@ export function Arrivals() {
     const cacheScheduledArrivals = async () => {
         console.log("Caching scheduled arrivals started")
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/getArrivals', {
+            const response = await fetch('https://warsaw-chopin-airport-arrival-departure.onrender.com/api/getArrivals', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -48,7 +47,7 @@ export function Arrivals() {
     const getCachedArrivals = async () => {
         console.log("Getting cached arrivals started")
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/getCachedArrivals', {
+            const response = await fetch('https://warsaw-chopin-airport-arrival-departure.onrender.com/api/getCachedArrivals', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -184,6 +183,7 @@ export function Arrivals() {
                     </table>
                 </div>
             </div>
+            {arrivalData.length !== 0 ? <p></p> : <p className="p-2 text-xl">Fetching data. It might take up to two minutes.</p>}
             <p>Time until next refresh: {pageTimer} seconds</p>
             <p>Time until next fetch: {fetchTimer} seconds</p>
         </div>

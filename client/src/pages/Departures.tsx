@@ -31,7 +31,7 @@ export function Departures() {
     const cacheScheduledDepartures = async () => {
         console.log('cacheScheduledDepartures start');
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/getDepartures', {
+            const response = await fetch('https://warsaw-chopin-airport-arrival-departure.onrender.com/api/getDepartures', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -49,7 +49,7 @@ export function Departures() {
     const getCachedDepartures = async () => {
         console.log('getCachedDepartures start');
         try {
-            const response = await fetch(`http://127.0.0.1:5000/api/getCachedDepartures`, {
+            const response = await fetch(`https://warsaw-chopin-airport-arrival-departure.onrender.com/api/getCachedDepartures`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -196,6 +196,7 @@ export function Departures() {
                     </table>
                 </div>
             </div>
+            {departuresData ? <p></p> : <p>Fetching data. It might take up to two minutes.</p>}
             <p>Time until next page: {pageTimer} seconds</p>
             <p>Time until next refresh: {fetchTimer} seconds</p>
             <Button onClick={() => getCachedDepartures()}>Click me</Button>

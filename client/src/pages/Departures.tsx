@@ -196,10 +196,9 @@ export function Departures() {
                     </table>
                 </div>
             </div>
-            {departuresData ? <p></p> : <p>Fetching data. It might take up to two minutes.</p>}
+            {departuresData.length !== 0 ? <p></p> : <p>Fetching data. It might take up to two minutes.</p>}
             <p>Time until next page: {pageTimer} seconds</p>
             <p>Time until next refresh: {fetchTimer} seconds</p>
-            <Button onClick={() => getCachedDepartures()}>Click me</Button>
         </div>
     )
 }

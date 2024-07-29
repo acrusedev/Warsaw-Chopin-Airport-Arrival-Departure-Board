@@ -16,7 +16,6 @@ class Departure:
             try:
                 single_departure_object = self.warsaw_airport.departures['data'][i]['flight']
                 destination_airport_icao_code = single_departure_object['airport']['destination']['code']['icao']
-        
                 airport_details = self.fr.get_airport_details(code = destination_airport_icao_code)
                 weather = Weather(fr = self.fr, airport_details = airport_details)
                 departure_object_list = {
